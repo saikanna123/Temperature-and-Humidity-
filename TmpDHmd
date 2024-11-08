@@ -1,0 +1,32 @@
+// using esp32 and dht11 sensor 
+#include <DHT.h>
+
+#define DHTPIN 4      // Define the pin where the data pin is connected
+#define DHTTYPE DHT11 // Define the type of sensor
+
+DHT dht(DHTPIN, DHTTYPE); // Create a DHT object
+
+void setup() {
+    Serial.begin(115200); // Start serial communication at 115200 baud
+    dht.begin();          // Initialize the DHT sensor
+}
+
+void loop() {
+    delay(2000); // Wait a few seconds between measurements
+
+    float humidity = dht.readHumidity();    // Read humidity
+    float temperature = dht.readTemperature(); // Read temperature in Celsius
+
+    // Check if any reads failed and exit early (to try again).
+    if (isnan(humidity) || isnan(temperature)) {
+        Serial.println("Failed to read from DHT sensor!");
+        return;
+    }
+
+    // Print the results to Serial Monitor
+    Serial.print("Humidity: ");
+    Serial.print(humidity);
+    Serial.print("%  Temperature: ");
+    Serial.print(temperature);
+    Serial.println("°C");
+}
